@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kalkulator HP</title>
+    <style>
+        body {
+            margin: 0;
+            background: #f0f0f0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            font-family: Arial;
+        }
+        
+        .phone {
+            width: 310px;
+            background: #111827;
+            padding: 25px 18px;
+            border-radius: 35px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+        
+        .top-bar {
+            color: #9ca3af;
+            font-size: 12px;
+            text-align: center;
+            margin-bottom: 15px
+        }
+        
+        .display {
+            background: #fef3c7;
+            height: 75px;
+            border-radius: 18px;
+            text-align: right;
+            font-size: 36px;
+            line-height: 75px;
+            padding: 0 18px;
+            margin-bottom: 18px;
+            color: #1f2937;
+            overflow: hidden
+        }
+        
+        .buttons {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px
+        }
+        
+        button {
+            height: 62px;
+            border: none;
+            border-radius: 16px;
+            font-size: 22px;
+            background: white;
+            color: #111;
+            cursor: pointer;
+            font-weight: 500;
+        }
+        
+        button:active {
+            transform: scale(0.95)
+        }
+        
+        .btn-clear {
+            background: #fecaca;
+            color: #991b1b
+        }
+        
+        .btn-op {
+            background: #dbeafe;
+            color: #1e40af;
+            font-size: 26px
+        }
+        
+        .btn-equal {
+            background: #3b82f6;
+            color: white;
+            grid-row: span 2;
+            height: 100%
+        }
+        
+        .zero {
+            grid-column: span 2
+        }
+    </style>
+</head>
+
+<body>
+    <div class="phone">
+        <div class="top-bar">Kalkulator HP - EV & BVA</div>
+        <div class="display" id="display">0</div>
+        <div class="buttons">
+            <button class="btn-clear" onclick="C()">C</button>
+            <button class="btn-clear" onclick="D()">⌫</button>
+            <button class="btn-op" onclick="A('/')">÷</button>
+            <button class="btn-op" onclick="A('*')">×</button>
+
+            <button onclick="N('7')">7</button>
+            <button onclick="N('8')">8</button>
+            <button onclick="N('9')">9</button>
+            <button class="btn-op" onclick="A('-')">−</button>
+
+            <button onclick="N('4')">4</button>
+            <button onclick="N('5')">5</button>
+            <button onclick="N('6')">6</button>
+            <button class="btn-op" onclick="A('+')">+</button>
+
+            <button onclick="N('1')">1</button>
+            <button onclick="N('2')">2</button>
+            <button onclick="N('3')">3</button>
+            <button class="btn-equal" onclick="H()">=</button>
+
+            <button class="zero" onclick="N('0')">0</button>
+            <button onclick="N('.')">.</button>
+        </div>
+    </div>
+
+    <script>
+        let cur = "0";
+        const disp = document.getElementById("display");
+
+        function UP() {
+            disp.innerText = cur;
+        }
+
+        function N(n) {
+            if (cur === "0") cur = n;
+            else cur += n;
+            UP();
+        }
+
+        function A(op) {
+            let last = cur.slice(-1);
+            if ("+-*/".includes(last)) cur = cur.slice(0, -1) + op;
+            else cur += op;
+            UP();
+        }
+
+        function C() {
+            cur = "0";
+            UP();
+        }
+
+        function D() {
+            cur = cur.slice(0, -1);
+            if (cur === "") cur = "0";
+            UP();
+        }
+
+        function H() {
+            try {
+                if (cur.includes("/0")) {
+                    disp.innerText = "Error";
+                    cur = "0";
+                    return;
+                }
+                let res = eval(cur);
+                if (res > 999999999 || res < -999999999) {
+                    disp.innerText = "Overflow";
+                    cur = "0";
+                    return;
+                }
+                cur = res.toString();
+                UP();
+            } catch {
+                disp.innerText = "Error";
+                cur = "0";
+            }
+        }
+    </script>
+</body>
+
+</html>
